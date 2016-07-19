@@ -35,6 +35,10 @@
             android:name=".MainActivity"
             android:label="@string/title_activity_main" >
         </activity>
+        <activity
+            android:name=".AddFormActivity"
+            android:label="@string/title_activity_add_form" >
+        </activity>
     </application>
 
 </manifest>

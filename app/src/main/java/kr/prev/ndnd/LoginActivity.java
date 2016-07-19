@@ -17,6 +17,17 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import kr.prev.ndnd.utils.SessionManager;
+
+
+/**
+ * proj. ndnd
+ * LoginActivity
+ *
+ * @author Prev (prevdev@gmail.com)
+ */
+
+
 public class LoginActivity extends AppCompatActivity {
 
 	CallbackManager fbCallbackManager;
@@ -44,7 +55,8 @@ public class LoginActivity extends AppCompatActivity {
 			public void onSuccess(LoginResult loginResult) {
 				//Toast.makeText(LoginActivity.this, loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
 
-				openMainActivity( loginResult.getAccessToken().getToken() );
+				SessionManager.getInstance().setAccessToken( loginResult.getAccessToken().getToken() );
+				openMainActivity();
 			}
 
 			@Override
@@ -60,16 +72,17 @@ public class LoginActivity extends AppCompatActivity {
 		});
 
 		if (AccessToken.getCurrentAccessToken() != null) {
-			openMainActivity( AccessToken.getCurrentAccessToken().getToken() );
+			SessionManager.getInstance().setAccessToken( AccessToken.getCurrentAccessToken().getToken() );
+			openMainActivity();
 		}
 	}
 
 
-	private void openMainActivity(String accessToken) {
-		Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-		intent.putExtra("accessToken", accessToken);
+	private void openMainActivity() {
+		//Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+		//intent.putExtra("accessToken", accessToken);
 		finish();
-		startActivity(intent);
+		startActivity( new Intent(LoginActivity.this, MainActivity.class) );
 	}
 
 	@Override

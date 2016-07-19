@@ -1,6 +1,8 @@
 package kr.prev.ndnd;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.facebook.login.widget.ProfilePictureView;
 
 import org.w3c.dom.Text;
 
@@ -22,9 +28,19 @@ import kr.prev.ndnd.data.InitialData;
 import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.net.NdAPI;
 import kr.prev.ndnd.utils.NdUtil;
+import kr.prev.ndnd.utils.RecordListAdapter;
+import kr.prev.ndnd.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+
+/**
+ * proj. ndnd
+ * MainActivity
+ *
+ * @author Prev (prevdev@gmail.com)
+ */
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,36 +51,80 @@ public class MainActivity extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
-		accessToken = getIntent().getStringExtra("accessToken");
-		//( (TextView) findViewById(R.id.text1) ).setText(accessToken);
+
+		// get facebook access token
+		//accessToken = getIntent().getStringExtra("accessToken");
+		accessToken = SessionManager.getInstance().getAccessToken();
 
 		Log.d("accessToken", accessToken);
 
-		NdAPI.getInstance().load(accessToken, new Callback<InitialData>() {
+
+		//--------------------------------------------------
+		// UI Object Control
+		//---------------------------------------------------
+		Button registerButton = (Button) findViewById(R.id.addRecordDataBtn);
+		registerButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(MainActivity.this, AddFormActivity.class));
+			}
+		});
+
+
+
+
+		//--------------------------------------------------
+		// Load initial data by connecting to server
+		//---------------------------------------------------
+		NdAPI.loadInitialData(new Callback<InitialData>() {
+
+
+			/**
+			 * On Response Callback
+			 * @param call: Call<InitialData>
+			 * @param response: Response<InitialData>
+			 */
 			@Override
 			public void onResponse(Call<InitialData> call, Response<InitialData> response) {
-				InitialData tempData = response.body();
+				InitialData initData = response.body();
 
-				Log.d("user", tempData.user.toString());
+				Log.d("user", initData.user.toString());
 
+
+				//--------------------------------------
+				// Set summary data
+				//--------------------------------------
+				((TextView) findViewById(R.id.sumLendText)).setText(NdUtil.getFormattedAmount(initData.summary.lend));
+				((TextView) findViewById(R.id.sumLoanText)).setText(NdUtil.getFormattedAmount(initData.summary.loan));
+
+
+				//--------------------------------------
+				// Set Listview by recordData
+				//--------------------------------------
 				RecordListAdapter adapter = new RecordListAdapter();
 				ListView listView = (ListView) findViewById(R.id.recordListView);
 				listView.setAdapter(adapter);
 
-				for (RecordData rd : tempData.data) {
-					//Log.d("record", rd.toString());
-
+				for (RecordData rd : initData.data)
 					adapter.getList().add(rd);
-					//Log.d("data", "------------------");
-					//Log.d("data", rd.id + " / " + rd.amout + " / " + rd.note);
-				}
+
+
 			}
 
+
+			/**
+			 * On Failure Callback
+			 * @param call: Call<InitialData>
+			 * @param t: Throwable
+			 */
 			@Override
 			public void onFailure(Call<InitialData> call, Throwable t) {
+				Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
 				Log.e("callback", "fail");
 			}
+
 		});
+
 	}
 
 
@@ -84,44 +144,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-class RecordListAdapter extends BaseAdapter {
-
-	private ArrayList<RecordData> list;
-
-	public RecordListAdapter() {
-		list = new ArrayList<RecordData>();
-	}
-
-	public ArrayList<RecordData> getList() {
-		return list;
-	}
-
-	@Override
-	public int getCount() { return list.size(); }
-
-	@Override
-	public Object getItem(int position) { return list.get(position); }
-
-	@Override
-	public long getItemId(int position) { return position; }
-
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		final int pos = position;
-		final Context context = parent.getContext();
-
-		if (convertView == null) {
-			LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.list_item, parent, false);
-		}
-
-		RecordData data = list.get(position);
-
-		( (TextView) convertView.findViewById(R.id.nameText) ).setText( "" + data.target_user_id );
-		( (TextView) convertView.findViewById(R.id.noteText) ).setText( data.note );
-		( (TextView) convertView.findViewById(R.id.amoutText) ).setText( NdUtil.getFormattedAmount(data.amount) );
-		( (TextView) convertView.findViewById(R.id.additionalText) ).setText( NdUtil.getRelativeDate(data.date) + " " + data.location );
-
-		return convertView;
-	}
-}

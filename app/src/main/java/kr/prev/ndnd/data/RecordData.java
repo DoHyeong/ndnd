@@ -8,17 +8,67 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+
+/**
+ * Record Data
+ */
 public class RecordData {
+	/**
+	 * Record ID (unique)
+	 */
 	public int id;
-	public int user_id;
-	public int target_user_id;
+
+	/**
+	 * UserID
+	 */
+	public int userId;
+
+	/**
+	 * Record type
+	 *
+	 * 0: lend
+	 * 1: loan
+	 */
 	public int type;
+
+	/**
+	 * 0: transaction not cleared
+	 * 1: transaction cleared
+	 */
 	public int state;
+
+
+	/**
+	 * Amount of transaction
+	 */
 	public int amount;
+
+
+	/**
+	 * Note of transaction
+	 * ex) 점심, 저녁 커피
+	 */
 	public String note;
+
+
+	/**
+	 * Date and time of transaction
+	 * YYYY-mm-dd HH:ii:ss
+	 */
 	public String date;
+
+
+	/**
+	 * Location of transaction
+	 */
 	public String location;
 
+
+	/**
+	 * Target User Data
+	 * Someone who has transaction with current user
+	 */
+	public UserData targetUser;
 
 
 	@Override

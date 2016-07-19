@@ -1,0 +1,273 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="kr.prev.ndnd.AddFormActivity"
+                android:orientation="vertical"
+                android:background="#dddddd">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout"
+        android:background="#FFA601">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:id="@+id/imageView2"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/title_black"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayout"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="1"
+            android:background="#ffffff"
+            android:layout_marginBottom="2dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="받을 돈"
+                android:id="@+id/button"
+                android:layout_weight="0.5"
+                android:background="#ffffff"
+                android:textColor="#111111"
+                android:textSize="17dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="빌린 돈"
+                android:id="@+id/button2"
+                android:layout_weight="0.5"
+                android:textColor="#111111"
+                android:background="#ffffff"
+                android:textSize="17dp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#ffffff"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="이름"
+                android:id="@+id/form_name_label"
+                android:textColor="#666666"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="이름"
+                android:ems="10"
+                android:id="@+id/form_name_text"
+                android:textColor="#111111"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="textEnd"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#ffffff"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="금액"
+                android:id="@+id/form_amount_label"
+                android:textColor="#666666"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="00,000"
+                android:ems="10"
+                android:id="@+id/form_amount_text"
+                android:textColor="#111111"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="textEnd"/>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#ffffff"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginBottom="2dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="노트"
+                android:id="@+id/form_note_label"
+                android:textColor="#666666"
+                android:layout_marginTop="10dp"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_marginTop="4dp">
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:text="집적입력"
+                    android:id="@+id/button3"
+                    android:layout_marginLeft="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:text="커피"
+                    android:id="@+id/button4"
+                    android:layout_marginLeft="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:text="저녁"
+                    android:id="@+id/button5"
+                    android:layout_marginLeft="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="34dp"
+                    android:text="점심"
+                    android:id="@+id/button6"
+                    android:layout_marginLeft="2dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#ffffff"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginBottom="2dp"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="날짜"
+                android:id="@+id/form_date_label"
+                android:textColor="#666666"
+                android:layout_marginTop="10dp"/>
+
+            <DatePicker
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/datePicker"
+                android:layout_marginLeft="15dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:background="#ffffff"
+            android:paddingTop="3dp"
+            android:paddingBottom="3dp"
+            android:layout_marginBottom="2dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="위치"
+                android:id="@+id/form_location_label"
+                android:textColor="#666666"/>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:text="이름"
+                android:ems="10"
+                android:id="@+id/form_location_text"
+                android:textColor="#111111"
+                android:layout_marginLeft="10dp"
+                android:textAlignment="textEnd"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/regsiterButton"
+                android:text="등록"
+                android:background="#FFA601"
+                android:textSize="18dp"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

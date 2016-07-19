@@ -7,4 +7,5 @@
     <string name="facebook_app_id">1070967136328935</string>
     <string name="facebook_app_name">NaeDonNaeDo</string>
     <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_add_form">AddFormActivity</string>
 </resources>
