@@ -11,7 +11,6 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         android:layout_marginTop="15dp">
 
         <ImageView
@@ -20,13 +19,12 @@
             android:id="@+id/imageView2"
             android:layout_gravity="center_horizontal"
             android:src="@drawable/title_black"
-            android:layout_marginBottom="10dp"/>
+            />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8px">
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -34,28 +32,36 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="빌린 금액"
                 android:id="@+id/loanedTextLabel"
-                android:layout_marginLeft="50px"
-                android:textColor="#111111"/>
+                android:layout_marginLeft="67dp"
+                android:textColor="#111111"
+                android:layout_marginStart="67dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:textSize="15dp"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/sumLoanText"
                 android:text="0원"
-                android:layout_alignParentTop="true"
+                android:textColor="#ffffff"
+                android:layout_marginLeft="19dp"
+                android:layout_marginStart="19dp"
+                android:textSize="22dp"
+                android:gravity="center_horizontal"
+                android:layout_centerVertical="true"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_marginLeft="50px"
-                android:textColor="#222222"
-                android:layout_marginRight="50px"/>
+                android:textStyle="bold"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="#aaaaaaaa"
+                android:layout_centerHorizontal="true"
+                android:layout_alignBottom="@+id/sumLendText"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,19 +69,30 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="받을 금액"
                 android:id="@+id/lendedTextLabel"
-                android:layout_marginLeft="50px"
-                android:textColor="#111111"/>
+                android:textColor="#111111"
+                android:layout_marginRight="69dp"
+                android:layout_marginEnd="69dp"
+                android:textSize="15dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="0원"
                 android:id="@+id/sumLendText"
-                android:layout_marginLeft="50px"
-                android:textColor="#222222"
-                android:layout_marginRight="50px"/>
-        </LinearLayout>
+                android:textSize="22dp"
+                android:gravity="center_horizontal"
+                android:layout_marginRight="23dp"
+                android:layout_marginEnd="23dp"
+                android:layout_alignTop="@+id/sumLoanText"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:textColor="#ffffff"
+                android:textStyle="bold"/>
+        </RelativeLayout>
 
     </LinearLayout>
 

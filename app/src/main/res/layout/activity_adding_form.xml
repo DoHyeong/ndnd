@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="kr.prev.ndnd.AddFormActivity"
+                tools:context="kr.prev.ndnd.AddingFormActivity"
                 android:orientation="vertical"
                 android:background="#dddddd">
 
@@ -26,7 +26,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/linearLayout"
@@ -41,103 +41,136 @@
             android:layout_height="wrap_content"
             android:weightSum="1"
             android:background="#ffffff"
-            android:layout_marginBottom="2dp">
+            >
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="받을 돈"
-                android:id="@+id/button"
+                android:id="@+id/fTypeLendBtn"
                 android:layout_weight="0.5"
                 android:background="#ffffff"
                 android:textColor="#111111"
-                android:textSize="17dp"/>
+                android:textSize="15dp"/>
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="빌린 돈"
-                android:id="@+id/button2"
+                android:id="@+id/fTypeLoanBtn"
                 android:layout_weight="0.5"
                 android:textColor="#111111"
-                android:background="#ffffff"
-                android:textSize="17dp"/>
+                android:background="#aaaaaa"
+                android:textSize="15dp"/>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:background="#ffffff"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_marginBottom="2dp">
+            android:layout_marginBottom="1dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="이름"
-                android:id="@+id/form_name_label"
-                android:textColor="#666666"/>
+                android:id="@+id/fNameLabel"
+                android:textColor="#666666"
+                android:textSize="14dp"
+                android:layout_gravity="center_vertical"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="이름"
                 android:ems="10"
-                android:id="@+id/form_name_text"
+                android:id="@+id/fNameText"
                 android:textColor="#111111"
                 android:layout_marginLeft="10dp"
-                android:textAlignment="textEnd"/>
+                android:textAlignment="textEnd"
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:text="(이름정보)"
+                android:textSize="17dp"/>
         </LinearLayout>
 
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:background="#ffffff"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_marginBottom="2dp">
+            android:layout_marginBottom="1dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="금액"
-                android:id="@+id/form_amount_label"
-                android:textColor="#666666"/>
+                android:id="@+id/fAmountLabel"
+                android:textColor="#666666"
+                android:layout_gravity="center_vertical"
+                android:textSize="14dp"/>
 
-            <EditText
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textPersonName"
-                android:text="00,000"
-                android:ems="10"
-                android:id="@+id/form_amount_text"
-                android:textColor="#111111"
-                android:layout_marginLeft="10dp"
-                android:textAlignment="textEnd"/>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10px">
+
+                <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:text="0"
+                    android:ems="10"
+                    android:id="@+id/fAmountText"
+                    android:textColor="#111111"
+                    android:textAlignment="textEnd"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:layout_alignParentBottom="true"
+                    android:layout_toLeftOf="@+id/fAmountTextPostfix"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:textSize="17dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="원"
+                    android:id="@+id/fAmountTextPostfix"
+                    android:textColor="#333333"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textSize="17dp"/>
+            </RelativeLayout>
         </LinearLayout>
 
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:background="#ffffff"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="1dp"
             >
 
             <TextView
@@ -145,109 +178,130 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="노트"
-                android:id="@+id/form_note_label"
+                android:id="@+id/fNoteLabel"
                 android:textColor="#666666"
-                android:layout_marginTop="10dp"/>
+                android:textSize="14dp"
+                android:gravity="right"
+                android:layout_gravity="center_vertical"/>
 
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
                 android:gravity="right"
-                android:layout_marginTop="4dp">
+                android:layout_marginLeft="10dp">
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:text="집적입력"
-                    android:id="@+id/button3"
-                    android:layout_marginLeft="2dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:text="커피"
-                    android:id="@+id/button4"
-                    android:layout_marginLeft="2dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
-                    android:text="저녁"
-                    android:id="@+id/button5"
-                    android:layout_marginLeft="2dp" />
-
-                <Button
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="34dp"
+                    android:layout_height="36dp"
                     android:text="점심"
-                    android:id="@+id/button6"
-                    android:layout_marginLeft="2dp" />
+                    android:id="@+id/fNoteLunchBtn"
+                    android:layout_marginRight="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="저녁"
+                    android:id="@+id/fNoteDinnerBtn"
+                    android:layout_marginRight="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="커피"
+                    android:id="@+id/fNoteCoffeeBtn"
+                    android:layout_marginRight="2dp" />
+
+                <Button
+                    style="?android:attr/buttonStyleSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="36dp"
+                    android:text="집적입력"
+                    android:id="@+id/fNoteCustomBtn" />
+
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:background="#ffffff"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_marginBottom="2dp"
-            >
+            android:layout_marginBottom="1dp"
+            android:weightSum="1">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="날짜"
-                android:id="@+id/form_date_label"
+                android:id="@+id/fAmountLabel"
                 android:textColor="#666666"
-                android:layout_marginTop="10dp"/>
+                android:layout_gravity="center_vertical"
+                android:textSize="14dp"/>
 
-            <DatePicker
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/datePicker"
-                android:layout_marginLeft="15dp"/>
+                android:layout_gravity="center_vertical"
+                android:gravity="right"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="(현재 날짜)"
+                    android:id="@+id/fDateText"
+                    android:textColor="#111111"
+                    android:gravity="right"
+                    android:textSize="17dp"/>
+            </LinearLayout>
 
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="50dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:background="#ffffff"
             android:paddingTop="3dp"
             android:paddingBottom="3dp"
-            android:layout_marginBottom="2dp">
+            >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="위치"
-                android:id="@+id/form_location_label"
-                android:textColor="#666666"/>
+                android:id="@+id/fLocationLabel"
+                android:textColor="#666666"
+                android:textSize="14dp"
+                android:layout_gravity="center_vertical"/>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="이름"
+                android:text="(위치정보)"
                 android:ems="10"
-                android:id="@+id/form_location_text"
+                android:id="@+id/fLocationText"
                 android:textColor="#111111"
                 android:layout_marginLeft="10dp"
-                android:textAlignment="textEnd"/>
+                android:textAlignment="textEnd"
+                android:gravity="right"
+                android:textSize="17dp"/>
 
 
         </LinearLayout>
@@ -255,12 +309,12 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/regsiterButton"
+                android:id="@+id/fRegsiterButton"
                 android:text="등록"
                 android:background="#FFA601"
                 android:textSize="18dp"/>

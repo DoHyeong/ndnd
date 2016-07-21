@@ -57,7 +57,7 @@ public class RecordListAdapter extends BaseAdapter {
 
 		( (TextView) convertView.findViewById(R.id.nameText)).setText(data.targetUser.userName);
 		( (TextView) convertView.findViewById(R.id.noteText) ).setText(data.note);
-		( (TextView) convertView.findViewById(R.id.additionalText) ).setText( NdUtil.getRelativeDate(data.date) + " " + data.location );
+		( (TextView) convertView.findViewById(R.id.additionalText) ).setText( DateUtil.getRelativeDate(data.date) + " " + data.location );
 
 
 		switch (data.type) {

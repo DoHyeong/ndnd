@@ -1,35 +1,24 @@
 package kr.prev.ndnd;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.facebook.login.widget.ProfilePictureView;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
+import com.facebook.AccessToken;
 
 import kr.prev.ndnd.data.InitialData;
 import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.net.NdAPI;
 import kr.prev.ndnd.utils.NdUtil;
 import kr.prev.ndnd.utils.RecordListAdapter;
-import kr.prev.ndnd.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 		// get facebook access token
 		//accessToken = getIntent().getStringExtra("accessToken");
-		accessToken = SessionManager.getInstance().getAccessToken();
+		accessToken = AccessToken.getCurrentAccessToken().getToken();
 
 		Log.d("accessToken", accessToken);
 
@@ -66,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
 		registerButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startActivity(new Intent(MainActivity.this, AddFormActivity.class));
+				startActivity(new Intent(MainActivity.this, AddingFormActivity.class));
 			}
 		});
 

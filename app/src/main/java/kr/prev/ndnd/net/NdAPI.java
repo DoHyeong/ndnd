@@ -3,17 +3,20 @@ package kr.prev.ndnd.net;
 
 import android.util.Log;
 
+import com.facebook.AccessToken;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import kr.prev.ndnd.data.CommitResult;
 import kr.prev.ndnd.data.InitialData;
 import kr.prev.ndnd.data.RecordData;
-import kr.prev.ndnd.utils.SessionManager;
 import retrofit2.Call;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -47,11 +50,22 @@ public class NdAPI {
 				@QueryMap Map<String, String> queries
 		);
 
-		@POST("data/{id}")
-		public Call<CommitResult> saveData(
-			@Path("id") int id
+		@POST("data")
+		@FormUrlEncoded
+		public Call<CommitResult> insertRecordData(
+				@Field("type") String type,
+				@Field("target_social_uid") String targetSocialUid,
+				@Field("amount") String amount,
+				@Field("note") String note,
+				@Field("date") String date,
+				@Field("location") String location,
+				@QueryMap Map<String, String> queries
 		);
 	}
+
+	/*private static void appendAccessTokenToParams(Map<String, String> params) {
+
+	}*/
 
 	/**
 	 * Get base params (incluing access token)
@@ -59,7 +73,7 @@ public class NdAPI {
 	 */
 	private static Map<String, String> getBaseParams() {
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("access_token", SessionManager.getInstance().getAccessToken());
+		params.put("access_token", AccessToken.getCurrentAccessToken().getToken());
 
 		return params;
 	}
@@ -72,6 +86,23 @@ public class NdAPI {
 		APIService service = retrofit.create(APIService.class);
 
 		Call< InitialData > call = service.load(getBaseParams());
+		call.enqueue(callback);
+	}
+
+
+	public static void insertRecordData(Map<String, String> dataParams, Callback<CommitResult> callback) {
+		APIService service = retrofit.create(APIService.class);
+		//appendAccessTokenToParams(dataParams);
+
+		Call< CommitResult > call = service.insertRecordData(
+				dataParams.get("type"),
+				dataParams.get("target_social_uid"),
+				dataParams.get("amount"),
+				dataParams.get("note"),
+				dataParams.get("date"),
+				dataParams.get("location"),
+				getBaseParams()
+		);
 		call.enqueue(callback);
 	}
 }

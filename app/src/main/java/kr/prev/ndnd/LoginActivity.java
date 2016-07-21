@@ -17,8 +17,6 @@ import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
-import kr.prev.ndnd.utils.SessionManager;
-
 
 /**
  * proj. ndnd
@@ -53,9 +51,7 @@ public class LoginActivity extends AppCompatActivity {
 		LoginManager.getInstance().registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				//Toast.makeText(LoginActivity.this, loginResult.getAccessToken().getUserId(), Toast.LENGTH_SHORT).show();
-
-				SessionManager.getInstance().setAccessToken( loginResult.getAccessToken().getToken() );
+				//SessionManager.getInstance().setAccessToken( loginResult.getAccessToken().getToken() );
 				openMainActivity();
 			}
 
@@ -72,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
 		});
 
 		if (AccessToken.getCurrentAccessToken() != null) {
-			SessionManager.getInstance().setAccessToken( AccessToken.getCurrentAccessToken().getToken() );
+			//SessionManager.getInstance().setAccessToken( AccessToken.getCurrentAccessToken().getToken() );
 			openMainActivity();
 		}
 	}
