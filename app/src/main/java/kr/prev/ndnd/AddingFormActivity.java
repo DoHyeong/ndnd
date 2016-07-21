@@ -1,7 +1,9 @@
 package kr.prev.ndnd;
 
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.location.Location;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,11 +18,17 @@ import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+
 import kr.prev.ndnd.data.CommitResult;
 import kr.prev.ndnd.net.NdAPI;
 import kr.prev.ndnd.utils.DateUtil;
@@ -38,20 +46,21 @@ import retrofit2.Response;
  */
 
 
-public class AddingFormActivity extends AppCompatActivity implements Button.OnClickListener {
+public class AddingFormActivity extends AppCompatActivity implements Button.OnClickListener, GoogleApiClient.ConnectionCallbacks {
 
 	private int selectedNote = -1;
 	private String selectedNoteString;
 
 	EditText fNameText;
 	EditText fAmountText;
-
 	ArrayList<Button> fNoteBtns = new ArrayList<Button>();
 
 	TextView fDateText;
 	EditText fLocationText;
-
 	Button fRegsiterButton;
+
+
+	GoogleApiClient mGoogleApiClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +70,10 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 		fNameText = (EditText) findViewById(R.id.fNameText);
 		fAmountText = (EditText) findViewById(R.id.fAmountText);
 
-		fNoteBtns.add( (Button) findViewById(R.id.fNoteLunchBtn) );
-		fNoteBtns.add( (Button) findViewById(R.id.fNoteDinnerBtn) );
-		fNoteBtns.add( (Button) findViewById(R.id.fNoteCoffeeBtn) );
-		fNoteBtns.add( (Button) findViewById(R.id.fNoteCustomBtn) );
+		fNoteBtns.add((Button) findViewById(R.id.fNoteLunchBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteDinnerBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteCoffeeBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteCustomBtn));
 
 		fDateText = (TextView) findViewById(R.id.fDateText);
 		fLocationText = (EditText) findViewById(R.id.fLocationText);
@@ -80,9 +89,28 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 			fNoteBtns.get(i).setOnClickListener(this);
 
 		fRegsiterButton.setOnClickListener(this);
-		
+
+		GraphRequest request = GraphRequest.newMyFriendsRequest(
+				AccessToken.getCurrentAccessToken(),
+				new GraphRequest.GraphJSONArrayCallback() {
+					@Override
+					public void onCompleted(JSONArray jsonArray, GraphResponse graphResponse) {
+						Log.d("graph_api", jsonArray.toString());
+					}
+				}
+		);
+
+		Bundle parameters = new Bundle();
+		parameters.putString("locale", "ko");
+		parameters.putString("fields", "id,name,link");
+		request.setParameters(parameters);
+		request.executeAsync();
 
 
+		mGoogleApiClient = new GoogleApiClient.Builder(this)
+				.addConnectionCallbacks(this)
+				.addApi(LocationServices.API)
+				.build();
 	}
 
 
@@ -96,17 +124,28 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 		return super.onOptionsItemSelected(item);
 	}
 
+	@Override
+	protected void onStart() {
+		mGoogleApiClient.connect();
+		super.onStart();
+	}
+
+	@Override
+	protected void onStop() {
+		mGoogleApiClient.disconnect();
+		super.onStop();
+	}
 
 
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
-			case R.id.fRegsiterButton :
+			case R.id.fRegsiterButton:
 				doUpload();
 				break;
 
 
-			default :
+			default:
 				if (fNoteBtns.contains(v)) {
 					int idx = fNoteBtns.indexOf(v);
 
@@ -170,5 +209,24 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 				}
 			});
 		}
+	}
+
+	@Override
+	public void onConnected(Bundle bundle) {
+		if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+			Toast.makeText(this, "권한이 필요합니다", Toast.LENGTH_SHORT).show();
+			return;
+		}
+		Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+		if (mLastLocation != null) {
+			Log.d("loc_lat", "" + mLastLocation.getLatitude() );
+			Log.d("loc_lng", "" + mLastLocation.getLongitude() );
+		}
+	}
+
+	@Override
+	public void onConnectionSuspended(int i) {
+
 	}
 }
