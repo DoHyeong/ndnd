@@ -220,7 +220,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="36dp"
-                    android:text="집적입력"
+                    android:text="직접입력"
                     android:id="@+id/fNoteCustomBtn" />
 
             </LinearLayout>

@@ -54,12 +54,12 @@ public class NdAPI {
 		@FormUrlEncoded
 		public Call<CommitResult> insertRecordData(
 				@Field("type") String type,
-				@Field("target_social_uid") String targetSocialUid,
+				@Field("target_user_name") String targetUserName,
 				@Field("amount") String amount,
 				@Field("note") String note,
 				@Field("date") String date,
 				@Field("location") String location,
-				@QueryMap Map<String, String> queries
+				@Field("access_token") String accessToken
 		);
 	}
 
@@ -96,12 +96,12 @@ public class NdAPI {
 
 		Call< CommitResult > call = service.insertRecordData(
 				dataParams.get("type"),
-				dataParams.get("target_social_uid"),
+				dataParams.get("target_user_name"),
 				dataParams.get("amount"),
 				dataParams.get("note"),
 				dataParams.get("date"),
 				dataParams.get("location"),
-				getBaseParams()
+				AccessToken.getCurrentAccessToken().getToken()
 		);
 		call.enqueue(callback);
 	}

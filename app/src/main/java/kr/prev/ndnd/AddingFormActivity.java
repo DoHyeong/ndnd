@@ -46,7 +46,7 @@ import retrofit2.Response;
  */
 
 
-public class AddingFormActivity extends AppCompatActivity implements Button.OnClickListener, GoogleApiClient.ConnectionCallbacks {
+public class AddingFormActivity extends AppCompatActivity implements Button.OnClickListener {
 
 	private int selectedNote = -1;
 	private String selectedNoteString;
@@ -60,7 +60,7 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 	Button fRegsiterButton;
 
 
-	GoogleApiClient mGoogleApiClient;
+	//GoogleApiClient mGoogleApiClient;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +107,10 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 		request.executeAsync();
 
 
-		mGoogleApiClient = new GoogleApiClient.Builder(this)
+		/*mGoogleApiClient = new GoogleApiClient.Builder(this)
 				.addConnectionCallbacks(this)
 				.addApi(LocationServices.API)
-				.build();
+				.build();*/
 	}
 
 
@@ -126,13 +126,13 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 
 	@Override
 	protected void onStart() {
-		mGoogleApiClient.connect();
+		//mGoogleApiClient.connect();
 		super.onStart();
 	}
 
 	@Override
 	protected void onStop() {
-		mGoogleApiClient.disconnect();
+		//mGoogleApiClient.disconnect();
 		super.onStop();
 	}
 
@@ -188,7 +188,7 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 		if (checkBeforeUpload()) {
 			HashMap<String, String> data = new HashMap<String, String>();
 			data.put("type", "0");
-			data.put("target_social_uid", fNameText.getText().toString());
+			data.put("target_user_name", fNameText.getText().toString());
 			data.put("amount", fAmountText.getText().toString());
 			data.put("note", selectedNoteString);
 			data.put("date", fDateText.getText().toString());
@@ -211,7 +211,7 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 		}
 	}
 
-	@Override
+	/*@Override
 	public void onConnected(Bundle bundle) {
 		if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 			Toast.makeText(this, "권한이 필요합니다", Toast.LENGTH_SHORT).show();
@@ -229,4 +229,5 @@ public class AddingFormActivity extends AppCompatActivity implements Button.OnCl
 	public void onConnectionSuspended(int i) {
 
 	}
+	*/
 }

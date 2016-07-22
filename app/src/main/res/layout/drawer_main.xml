@@ -25,21 +25,19 @@
                 app:civ_border_width="2dp"
                 app:civ_border_color="#2f2f2f"/>-->
 
+            <com.facebook.login.widget.ProfilePictureView
+                android:id="@+id/drawerProfilePicture"
+                android:layout_width="80dp"
+                android:layout_height="80dp"/>
+
             <TextView
                 android:layout_marginTop="15dp"
                 android:textColor="#efefef"
                 android:textSize="25dp"
-                android:id="@+id/tv_drawer_name"
+                android:id="@+id/drawerMameText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="사용자"/>
-            <TextView
-                android:layout_marginTop="0dp"
-                android:textColor="#ababab"
-                android:textSize="18dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="facebook account"/>
         </LinearLayout>
 
 
@@ -56,7 +54,7 @@
                 android:background="#ffffff"
                 ></View>
             <LinearLayout
-                android:id="@+id/lv_drawer_lv1"
+                android:id="@+id/drawerLogoutWrapper"
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
                 android:gravity="center"
