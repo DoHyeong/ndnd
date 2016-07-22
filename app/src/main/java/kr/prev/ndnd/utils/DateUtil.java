@@ -65,6 +65,17 @@ public class DateUtil {
 
 
 	/**
+	 * Y-m-d H:i:s
+	 *
+	 * @param date: Date
+	 * @return: String
+	 */
+	public static String parseAsYMDHIS(Date date) {
+		return (date.getYear() + 1900) + "-" + (date.getMonth() + 1) + "-" + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+	}
+
+
+	/**
 	 * 같은 날짜인지 체크
 	 * @param d1: Date
 	 * @param d2: Date

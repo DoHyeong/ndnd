@@ -1,5 +1,6 @@
 package kr.prev.ndnd;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -67,6 +68,8 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 
 
     GPSTracker gpsTracker;
+
+    ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -271,12 +274,16 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 			data.put("target_user_name", fNameText.getText().toString());
 			data.put("amount", fAmountText.getText().toString());
 			data.put("note", selectedNoteString);
-			data.put("date", fDateText.getText().toString());
+			data.put("date", DateUtil.parseAsYMDHIS(selectedDate));
 			data.put("location", fLocationText.getText().toString());
+
+            progressDialog = ProgressDialog.show(this, "", "전송 중", true);
 
 			NdAPI.insertRecordData(data, new Callback<CommitResult>() {
 				@Override
 				public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
+                    progressDialog.hide();
+
 					if (response.body().success)
 						finish();
 					else
@@ -285,7 +292,8 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 
 				@Override
 				public void onFailure(Call<CommitResult> call, Throwable t) {
-					Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
+                    progressDialog.hide();
+                    Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
 				}
 			});
 		}
