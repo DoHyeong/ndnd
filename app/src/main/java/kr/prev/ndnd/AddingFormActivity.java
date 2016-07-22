@@ -195,7 +195,7 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
                 break;
 
             case R.id.fDateText :
-                DialogUtil.openDateDialog(this, "날짜 선택", selectedDate, new DialogUtil.Callback<Date>() {
+                DialogUtil.openDateDialog(getSupportFragmentManager(), "날짜 선택", selectedDate, new DialogUtil.Callback<Date>() {
                     @Override
                     public void onData(Date date) {
                         selectedDate = date;

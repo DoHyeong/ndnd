@@ -1,14 +1,12 @@
 package kr.prev.ndnd.utils;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
-import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.NumberPicker;
-import android.widget.Toast;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
+import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -43,36 +41,19 @@ public class DialogUtil {
         dialog.show();
     }
 
-    public static void openDateDialog(Context context, String title, Date date, final Callback<Date> callback) {
-        DatePickerDialog dialog = new DatePickerDialog(context, new DatePickerDialog.OnDateSetListener() {
+    public static void openDateDialog(FragmentManager fragmentManager, String title, Date date, final Callback<Date> callback) {
+
+        SlideDateTimeListener listener = new SlideDateTimeListener() {
             @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                final Date selectedDate = new Date(year-1900, monthOfYear, dayOfMonth);
-                //callback.onData( new Date(year-1900, monthOfYear, dayOfMonth) );
-
+            public void onDateTimeSet(Date date) {
+                callback.onData(date);
             }
-        }, date.getYear() + 1900, date.getMonth(), date.getDate());
+        };
 
-        dialog.setTitle(title);
-        dialog.show();
-
-
-        /*AlertDialog.Builder dialog2 = new AlertDialog.Builder(context);
-        final NumberPicker np = new NumberPicker(context);
-        np.setMinValue(1);
-        np.setMaxValue(23);
-        np.setValue(date.getHours());
-
-        dialog2.setTitle(title);
-        dialog2.setView(np);
-
-        dialog2.setPositiveButton("확인", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int whichButton) {
-                Log.d("hour", ""+np.getValue());
-            }
-        });
-
-        dialog2.show();*/
+        new SlideDateTimePicker.Builder(fragmentManager)
+                .setListener(listener)
+                .setInitialDate(date)
+                .build()
+                .show();
     }
 }

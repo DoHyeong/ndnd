@@ -1,5 +1,6 @@
 package kr.prev.ndnd;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,6 +40,8 @@ import retrofit2.Response;
  */
 
 public class MainActivity extends AppCompatActivity {
+
+    ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        progressDialog = ProgressDialog.show(this, "", "로딩 중입니다", true);
         loadRecords();
     }
 
@@ -132,6 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 for (RecordData rd : initData.data)
                     adapter.getList().add(rd);
 
+                progressDialog.hide();
+
             }
 
             /**
@@ -139,6 +146,8 @@ public class MainActivity extends AppCompatActivity {
              */
             @Override
             public void onFailure(Call<InitialData> call, Throwable t) {
+                progressDialog.hide();
+
                 Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
                 Log.e("callback", "fail");
             }
