@@ -53,7 +53,6 @@ public class LoginActivity extends AppCompatActivity {
 		LoginManager.getInstance().registerCallback(fbCallbackManager, new FacebookCallback<LoginResult>() {
 			@Override
 			public void onSuccess(LoginResult loginResult) {
-				//SessionManager.getInstance().setAccessToken( loginResult.getAccessToken().getToken() );
 				openMainActivity();
 			}
 
@@ -69,16 +68,13 @@ public class LoginActivity extends AppCompatActivity {
 			}
 		});
 
-		if (AccessToken.getCurrentAccessToken() != null) {
-			//SessionManager.getInstance().setAccessToken( AccessToken.getCurrentAccessToken().getToken() );
+		if (AccessToken.getCurrentAccessToken() != null)
 			openMainActivity();
-		}
 	}
 
 
 	private void openMainActivity() {
-		//Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-		//intent.putExtra("accessToken", accessToken);
+		Log.d("access_token", AccessToken.getCurrentAccessToken().getToken());
 		finish();
 		startActivity( new Intent(LoginActivity.this, MainActivity.class) );
 	}

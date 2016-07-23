@@ -2,6 +2,8 @@ package kr.prev.ndnd.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +15,20 @@ import com.daimajia.swipe.SimpleSwipeListener;
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.facebook.login.widget.ProfilePictureView;
+
+import org.w3c.dom.Text;
+
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import kr.prev.ndnd.R;
 import kr.prev.ndnd.controller.IViewControllerManager;
 import kr.prev.ndnd.data.CommitResult;
 import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.net.NdAPI;
+import kr.prev.ndnd.util.CircularImageUtil;
 import kr.prev.ndnd.util.DateUtil;
 import kr.prev.ndnd.util.FormatUtil;
 import retrofit2.Call;
@@ -29,7 +38,7 @@ import retrofit2.Response;
 public class RecordListAdapter extends BaseSwipeAdapter {
 	private Context context;
 	private IViewControllerManager viewControllerManager;
-    private ArrayList<RecordData> list;
+	private ArrayList<RecordData> list;
 
 
 	public RecordListAdapter(Context context) {
@@ -39,7 +48,7 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 	public ArrayList<RecordData> getList() { return list; }
 	public void setList(ArrayList<RecordData> list) { this.list = list; }
 
-    public void setViewControllerManager(IViewControllerManager viewControllerManager) { this.viewControllerManager = viewControllerManager; }
+	public void setViewControllerManager(IViewControllerManager viewControllerManager) { this.viewControllerManager = viewControllerManager; }
 
 
 	@Override
@@ -48,25 +57,22 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 	}
 
 	@Override
-	public View generateView(final int position, ViewGroup parent) {
+	public View generateView(int position, ViewGroup parent) {
 		View v = LayoutInflater.from(context).inflate(R.layout.list_item, null);
 		SwipeLayout swipeLayout = (SwipeLayout) v.findViewById(getSwipeLayoutResourceId(position));
 
-		swipeLayout.addSwipeListener(new SimpleSwipeListener() {
-			@Override
-			public void onOpen(SwipeLayout layout) {
-				//layout.getCurrentBottomView()
-			}
-		});
-
-		v.findViewById(R.id.completeButton).setOnClickListener(new View.OnClickListener() {
+		v.findViewById(R.id.completeButtonWrap).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-				RecordData data = list.get(position);
-				data.state = 1;
+				SwipeLayout swipeLayout = (SwipeLayout) view.getParent();
 
-                if (viewControllerManager != null)
-                    viewControllerManager.updateAllViewControllers();
+				int pos = (Integer) swipeLayout.getTag();
+
+				RecordData data = list.get(pos);
+				data.state = (data.state + 1) % 2; // toggle
+
+				if (viewControllerManager != null)
+					viewControllerManager.updateAllViewControllers();
 
 				Map<String, String> params = NdAPI.getBaseParams();
 				params.put("state", Integer.toString(data.state));
@@ -86,11 +92,7 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 							}
 						});
 
-
-				SwipeLayout swipeLayout = (SwipeLayout) view.getParent();
-				LinearLayout convertedView = (LinearLayout) swipeLayout.findViewById(R.id.listViewContainer);
-
-                fillValues(position, convertedView);
+				fillValues(pos, swipeLayout);
 				swipeLayout.close(true);
 			}
 		});
@@ -102,9 +104,13 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 	public void fillValues(int position, View convertView) {
 		RecordData data = list.get(position);
 
-		ProfilePictureView profilePicture = (ProfilePictureView) convertView.findViewById(R.id.profilePicture);
-		profilePicture.setProfileId(data.targetUser.socialUid);
-		//profilePicture.setCropped(true);
+		convertView.setTag(position);
+
+		CircleImageView profilePicture = (CircleImageView) convertView.findViewById(R.id.profilePicture);
+
+		if (data.targetUser.socialUid != null)  CircularImageUtil.setImage(profilePicture, "https://graph.facebook.com/" + data.targetUser.socialUid + "/picture?width=200&height=200");
+		else 	profilePicture.setImageResource(R.drawable.person);
+
 
 		ImageView recordTypeImage = (ImageView) convertView.findViewById(R.id.recordTypeImage);
 
@@ -115,18 +121,19 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 		( (TextView) convertView.findViewById(R.id.noteText) ).setText(data.note);
 		( (TextView) convertView.findViewById(R.id.additionalText) ).setText( DateUtil.getRelativeDate(data.date) + " " + data.location );
 
+        ((TextView) convertView.findViewById(R.id.completeButton)).setText( data.state == 0 ? "완료" : "복구" );
 
-		switch (data.type) {
+        switch (data.type) {
 			case 0 :
 				if (data.state == 0)    recordTypeImage.setImageResource(R.drawable.icon_lend);
-                else                    recordTypeImage.setImageResource(R.drawable.icon_lend_complete);
+				else                    recordTypeImage.setImageResource(R.drawable.icon_lend_complete);
 
 				amountText.setTextColor(Color.rgb(0, 102, 204));
 				break;
 
 			case 1:
-                if (data.state == 0)    recordTypeImage.setImageResource(R.drawable.icon_loan);
-                else                    recordTypeImage.setImageResource(R.drawable.icon_loan_complete);
+				if (data.state == 0)    recordTypeImage.setImageResource(R.drawable.icon_loan);
+				else                    recordTypeImage.setImageResource(R.drawable.icon_loan_complete);
 
 				amountText.setTextColor(Color.rgb(255, 51, 0));
 				amountText.setText( "-" + amountText.getText() );

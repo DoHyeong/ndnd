@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.daimajia.swipe.SwipeLayout
-    xmlns:swipe="http://schemas.android.com/apk/res-auto"
+<com.daimajia.swipe.SwipeLayout xmlns:swipe="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/tools"
     android:id="@+id/swipe"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -9,7 +9,7 @@
     swipe:rightEdgeSwipeOffset="0dp">
 
     <LinearLayout
-        android:id="@+id/completeButton"
+        android:id="@+id/completeButtonWrap"
         android:tag="Bottom2"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
@@ -19,6 +19,7 @@
         android:paddingRight="25dp">
 
         <TextView
+            android:id="@+id/completeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="완료"
@@ -48,16 +49,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <!--<ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:id="@+id/profileImage"
-                    android:src="@drawable/person"/>-->
-
-                <com.facebook.login.widget.ProfilePictureView
+                <!--<com.facebook.login.widget.ProfilePictureView
                     android:id="@+id/profilePicture"
                     android:layout_width="40dp"
-                    android:layout_height="40dp"/>
+                    android:layout_height="40dp"/>-->
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profilePicture"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_centerInParent="true"
+                    app:civ_border_width="2dp"
+                    app:civ_border_color="@color/light"
+                    android:src="@drawable/person" />
 
                 <LinearLayout
                     android:orientation="vertical"

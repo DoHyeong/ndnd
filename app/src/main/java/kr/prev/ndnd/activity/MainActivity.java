@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 	InitialData initData;
 
 	SummaryDataViewController summaryDataViewController;
-    UserDataViewController userDataViewController;
+	UserDataViewController userDataViewController;
 
 
 	Callback<InitialData> loadInitialCallBack = new Callback<InitialData>() {
@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 			ListView listView = (ListView) findViewById(R.id.recordListView);
 			listView.setAdapter(adapter);
 
-			MainActivity.this.updateAllViewControllers();
+			MainActivity.this.updateAllViewControllers(false);
 			loadingProgressDialog.hide();
 		}
 
@@ -155,26 +155,26 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 	 * Load initial data by connecting to server
 	 */
 	public void loadRecords() {
-		loadingProgressDialog.show();
+		if (!loadingProgressDialog.isShowing())
+			loadingProgressDialog.show();
 
 		NdAPI.createService()
 				.load(NdAPI.getBaseParams())
 				.enqueue(loadInitialCallBack);
 	}
 
-	public void updateUserDataFields(UserData userData) {
-		((TextView) findViewById(R.id.drawerMameText)).setText(userData.userName);
-		ProfilePictureView profilePicture = (ProfilePictureView) findViewById(R.id.drawerProfilePicture);
-		profilePicture.setProfileId( userData.socialUid );
+	@Override
+	public void updateAllViewControllers() {
+		updateAllViewControllers(true);
 	}
 
-    @Override
-    public void updateAllViewControllers() {
-        summaryDataViewController.renewData(initData.data);
+	public void updateAllViewControllers(boolean renew) {
+		if (renew)
+			summaryDataViewController.renewData(initData.data);
 
-        userDataViewController.update();
-        summaryDataViewController.update();
-    }
+		userDataViewController.update();
+		summaryDataViewController.update();
+	}
 }
 
 
