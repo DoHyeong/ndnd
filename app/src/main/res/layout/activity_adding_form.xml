@@ -94,7 +94,7 @@
                 android:textColor="#111111"
                 android:layout_marginLeft="10dp"
                 android:layout_gravity="center_vertical"
-                android:gravity="right"
+                android:gravity="center_vertical|right"
                 android:textSize="16dp"
                 android:hint="상대 이름을 입력하세요"
                 android:textColorHint="#aaaaaa" />
@@ -125,7 +125,8 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10px">
+                android:layout_marginLeft="10px"
+                android:layout_gravity="center_vertical">
 
                 <EditText
                     android:layout_width="wrap_content"
@@ -136,7 +137,7 @@
                     android:id="@+id/fAmountText"
                     android:textColor="#111111"
                     android:layout_gravity="center_vertical"
-                    android:gravity="right"
+                    android:gravity="center_vertical|right"
                     android:layout_alignParentBottom="true"
                     android:layout_toLeftOf="@+id/fAmountTextPostfix"
                     android:layout_alignParentLeft="true"
@@ -291,13 +292,13 @@
 
             <EditText
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="fill_parent"
                 android:inputType="textPersonName"
                 android:ems="10"
                 android:id="@+id/fLocationText"
                 android:textColor="#111111"
                 android:layout_marginLeft="10dp"
-                android:gravity="right"
+                android:gravity="center_vertical|right"
                 android:textSize="16dp"
                 android:textColorHint="#aaaaaa"
                 android:hint="간략한 위치정보를 입력하세요" />
