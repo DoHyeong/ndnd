@@ -1,8 +1,7 @@
 package kr.prev.ndnd.activity;
 
 import android.app.ProgressDialog;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
@@ -10,31 +9,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import com.facebook.AccessToken;
-import com.facebook.GraphRequest;
-import com.facebook.GraphResponse;
-import org.json.JSONArray;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
 import kr.prev.ndnd.R;
 import kr.prev.ndnd.controller.AddingFormViewController;
-import kr.prev.ndnd.data.CommitResult;
-import kr.prev.ndnd.net.NdAPI;
-import kr.prev.ndnd.util.DateUtil;
-import kr.prev.ndnd.util.DialogUtil;
+import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.util.GPSTracker;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -46,6 +27,8 @@ import retrofit2.Response;
 
 
 public class AddingFormActivity extends AppCompatActivity {
+
+	static final int RESULT_FRIEND_SELECTED = 3;
 
 	ProgressDialog loadingProgressDialog;
 	GPSTracker gpsTracker;
@@ -63,23 +46,6 @@ public class AddingFormActivity extends AppCompatActivity {
 		loadingProgressDialog = new ProgressDialog(this);
 		loadingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		loadingProgressDialog.setMessage("로딩중입니다...");
-
-		// Get friends by facebook
-		GraphRequest request = GraphRequest.newMyFriendsRequest(
-				AccessToken.getCurrentAccessToken(),
-				new GraphRequest.GraphJSONArrayCallback() {
-					@Override
-					public void onCompleted(JSONArray jsonArray, GraphResponse graphResponse) {
-						Log.d("graph_api", jsonArray.toString());
-					}
-				}
-		);
-
-		Bundle parameters = new Bundle();
-		parameters.putString("locale", "ko");
-		parameters.putString("fields", "id,name,link");
-		request.setParameters(parameters);
-		request.executeAsync();
 
 		gpsTracker = new GPSTracker(this);
 
@@ -130,4 +96,17 @@ public class AddingFormActivity extends AppCompatActivity {
 		}
 	}
 
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		if (resultCode == RESULT_FRIEND_SELECTED) {
+			RecordData model = viewController.getModel();
+			model.targetUser.socialUid = data.getStringExtra("social_uid");
+			model.targetUser.userName = data.getStringExtra("user_name");
+
+			viewController.update();
+		}
+	}
 }

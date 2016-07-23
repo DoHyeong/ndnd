@@ -2,23 +2,16 @@ package kr.prev.ndnd.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.daimajia.swipe.SimpleSwipeListener;
+
 import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
-import com.facebook.login.widget.ProfilePictureView;
 
-import org.w3c.dom.Text;
-
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -40,7 +33,6 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 	private IViewControllerManager viewControllerManager;
 	private ArrayList<RecordData> list;
 
-
 	public RecordListAdapter(Context context) {
 		this.context = context;
 		list = new ArrayList<RecordData>();
@@ -50,6 +42,26 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 
 	public void setViewControllerManager(IViewControllerManager viewControllerManager) { this.viewControllerManager = viewControllerManager; }
 
+	public void updateData(RecordData data) {
+		Map<String, String> params = NdAPI.getBaseParams();
+		params.put("state", Integer.toString(data.state));
+
+		NdAPI.createService()
+				.updateData(data.id, params)
+				.enqueue(new Callback<CommitResult>() {
+					@Override
+					public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
+						if (response.body() == null || response.body().success != true)
+							Toast.makeText(context, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
+					}
+
+					@Override
+					public void onFailure(Call<CommitResult> call, Throwable t) {
+						Toast.makeText(context, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
+					}
+				});
+	}
+
 
 	@Override
 	public int getSwipeLayoutResourceId(int position) {
@@ -58,7 +70,7 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 
 	@Override
 	public View generateView(int position, ViewGroup parent) {
-		View v = LayoutInflater.from(context).inflate(R.layout.list_item, null);
+		View v = LayoutInflater.from(context).inflate(R.layout.record_list_item, null);
 		SwipeLayout swipeLayout = (SwipeLayout) v.findViewById(getSwipeLayoutResourceId(position));
 
 		v.findViewById(R.id.completeButtonWrap).setOnClickListener(new View.OnClickListener() {
@@ -74,23 +86,7 @@ public class RecordListAdapter extends BaseSwipeAdapter {
 				if (viewControllerManager != null)
 					viewControllerManager.updateAllViewControllers();
 
-				Map<String, String> params = NdAPI.getBaseParams();
-				params.put("state", Integer.toString(data.state));
-
-				NdAPI.createService()
-						.updateData(data.id, params)
-						.enqueue(new Callback<CommitResult>() {
-							@Override
-							public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
-								if (response.body() == null || response.body().success != true)
-									Toast.makeText(context, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
-							}
-
-							@Override
-							public void onFailure(Call<CommitResult> call, Throwable t) {
-								Toast.makeText(context, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
-							}
-						});
+				updateData(data);
 
 				fillValues(pos, swipeLayout);
 				swipeLayout.close(true);

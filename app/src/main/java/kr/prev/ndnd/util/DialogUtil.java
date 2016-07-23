@@ -21,8 +21,11 @@ public class DialogUtil {
 		dialog.setTitle(title);
 		dialog.setMessage(message);
 
+		float DPI = context.getResources().getDisplayMetrics().density;
+		int margin = (int)(15*DPI);
+
 		final EditText input = new EditText(context);
-		dialog.setView(input);
+		dialog.setView(input, margin, margin, margin, margin);
 
 		dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 			@Override
@@ -30,12 +33,6 @@ public class DialogUtil {
 				callback.onData( input.getText().toString() );
 			}
 		});
-		/*dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int whichButton) {
-				callback.onData( null );
-			}
-		});*/
 
 		dialog.show();
 	}

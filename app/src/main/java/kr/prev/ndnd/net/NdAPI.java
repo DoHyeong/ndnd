@@ -55,6 +55,7 @@ public class NdAPI {
 		@FormUrlEncoded
 		public Call<CommitResult> insertRecordData(
 				@Field("type") int type,
+				@Field("target_social_uid") String targetSocialUid,
 				@Field("target_user_name") String targetUserName,
 				@Field("amount") int amount,
 				@Field("note") String note,

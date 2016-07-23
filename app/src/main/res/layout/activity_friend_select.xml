@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	tools:context=".activity.AddingFormActivity"
+	android:orientation="vertical"
+	android:background="#dddddd">
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:id="@+id/linearLayout"
+		android:background="#FFA601">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="상대 선택"
+            android:id="@+id/textView"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="13dp"
+            android:layout_marginBottom="13dp"
+            android:textColor="#000000" />
+    </LinearLayout>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_width="match_parent"
+		android:layout_height="fill_parent"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentStart="true"
+		android:layout_below="@+id/linearLayout">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="직접입력"
+            android:id="@+id/directInputButton"
+            android:layout_margin="10dp" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/friendListView"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
+
+</RelativeLayout>

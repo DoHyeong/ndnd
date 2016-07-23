@@ -3,6 +3,7 @@ package kr.prev.ndnd.controller;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.support.v4.app.FragmentActivity;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Date;
 import kr.prev.ndnd.R;
+import kr.prev.ndnd.activity.FriendSelectActivity;
 import kr.prev.ndnd.data.CommitResult;
 import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.data.UserData;
@@ -30,8 +32,8 @@ public class AddingFormViewController implements IViewController {
 	RecordData model;
 
 	Button typeBtn1, typeBtn2, registerBtn;
-	EditText nameText, amountText, locationText;
-	TextView dateText;
+	TextView nameText, dateText;
+	EditText amountText, locationText;
 	ArrayList<Button> noteBtns = new ArrayList<Button>();
 
 	int selectedNote = -1;
@@ -50,7 +52,11 @@ public class AddingFormViewController implements IViewController {
 					toggleTypeButton(typeBtn2, model.type == 1);
 					break;
 
-				case R.id.fDateText :
+				case R.id.fNameText:
+					activity.startActivityForResult( new Intent(activity, FriendSelectActivity.class), 0 );
+					break;
+
+				case R.id.fDateText:
 					DialogUtil.openDateDialog(((FragmentActivity) activity).getSupportFragmentManager(), "날짜 선택", selectedDate, new DialogUtil.Callback<Date>() {
 						@Override
 						public void onData(Date date) {
@@ -91,6 +97,7 @@ public class AddingFormViewController implements IViewController {
 	};
 
 
+
 	public AddingFormViewController(Activity activity) {
 		this.activity = activity;
 		this.model = new RecordData();
@@ -106,14 +113,23 @@ public class AddingFormViewController implements IViewController {
 
 	@Override
 	public void update() {
+		if (model.targetUser.userName != null) {
+			nameText.setText(model.targetUser.userName);
 
+			if (model.targetUser.socialUid.length() != 0)
+				nameText.getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.ADD);
+			else
+				nameText.getBackground().clearColorFilter();
+		}
 	}
+
+
 
 	protected void bindViews() {
 		typeBtn1 = (Button) activity.findViewById(R.id.fTypeLendBtn);
 		typeBtn2 = (Button) activity.findViewById(R.id.fTypeLoanBtn);
 
-		nameText = (EditText) activity.findViewById(R.id.fNameText);
+		nameText = (TextView) activity.findViewById(R.id.fNameText);
 		amountText = (EditText) activity.findViewById(R.id.fAmountText);
 
 		noteBtns = new ArrayList<Button>() {{
@@ -132,6 +148,8 @@ public class AddingFormViewController implements IViewController {
 	protected void bindEvents() {
 		typeBtn1.setOnClickListener(clickListener);
 		typeBtn2.setOnClickListener(clickListener);
+
+		nameText.setOnClickListener(clickListener);
 
 		for (Button b : noteBtns)
 			b.setOnClickListener(clickListener);
@@ -152,15 +170,17 @@ public class AddingFormViewController implements IViewController {
 
 
 
+	public RecordData getModel() {
+		return model;
+	}
 
-
-	protected void initModel() {
+	public void initModel() {
 		model.type = 0;
 		model.state = 0;
 	}
 
-	protected void updateModel() {
-		model.targetUser.userName = nameText.getText().toString();
+	public void updateModel() {
+		//model.targetUser.userName = nameText.getText().toString();
 		if (amountText.getText().length() == 0)	 model.amount = 0;
 		else										 model.amount = Integer.parseInt( amountText.getText().toString() );
 
@@ -198,6 +218,7 @@ public class AddingFormViewController implements IViewController {
 		NdAPI.createService()
 				.insertRecordData(
 						model.type,
+						model.targetUser.socialUid,
 						model.targetUser.userName,
 						model.amount,
 						model.note,
@@ -225,5 +246,7 @@ public class AddingFormViewController implements IViewController {
 				});
 	}
 
-	public void setLoadingProgressDialog(ProgressDialog dialog) { this.loadingProgressDialog = dialog; }
+	public void setLoadingProgressDialog(ProgressDialog dialog) {
+		this.loadingProgressDialog = dialog;
+	}
 }

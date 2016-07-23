@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 	SummaryDataViewController summaryDataViewController;
 	UserDataViewController userDataViewController;
 
+	RecordListAdapter recordListAdapter;
 
 	Callback<InitialData> loadInitialCallBack = new Callback<InitialData>() {
 		@Override
@@ -63,20 +64,20 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 			userDataViewController.setData(initData.user);
 			summaryDataViewController.setData(initData.summary);
 
-
-			// Set Listview by recordData
-			RecordListAdapter adapter = new RecordListAdapter(MainActivity.this);
-			adapter.setViewControllerManager(MainActivity.this);
-			adapter.setMode(Attributes.Mode.Single);
+			recordListAdapter.getList().clear();
 
 			for (RecordData rd : initData.data)
-				adapter.getList().add(rd);
+				recordListAdapter.getList().add(rd);
 
-			ListView listView = (ListView) findViewById(R.id.recordListView);
-			listView.setAdapter(adapter);
+			recordListAdapter.notifyDataSetChanged();
+
+
 
 			MainActivity.this.updateAllViewControllers(false);
 			loadingProgressDialog.hide();
+
+			if (initData.data.size() == 0)
+				Toast.makeText(MainActivity.this, "아직 기록이 없습니다!\n기록 등록하기 버튼을 눌러 추가해보세요", Toast.LENGTH_LONG).show();
 		}
 
 		@Override
@@ -99,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 
 		setContentView(R.layout.activity_main);
 
+
 		// Drawer layout proccess
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -107,9 +109,23 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 		drawer.setDrawerListener(toggle);
 		toggle.syncState();
 
-		//--------------------------------------------------
+
+		// Instance initializing
+		loadingProgressDialog = new ProgressDialog(this);
+		loadingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		loadingProgressDialog.setMessage("로딩중입니다...");
+
+		userDataViewController = new UserDataViewController(this);
+		summaryDataViewController = new SummaryDataViewController(this);
+
+		recordListAdapter = new RecordListAdapter(this);
+		recordListAdapter.setViewControllerManager(this);
+		recordListAdapter.setMode(Attributes.Mode.Single);
+
+		ListView listView = (ListView) findViewById(R.id.recordListView);
+		listView.setAdapter(recordListAdapter);
+
 		// UI Object Control
-		//---------------------------------------------------
 		findViewById(R.id.addRecordDataBtn).setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -125,14 +141,6 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 				finish();
 			}
 		});
-
-		loadingProgressDialog = new ProgressDialog(this);
-		loadingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-		loadingProgressDialog.setMessage("로딩중입니다...");
-
-
-		userDataViewController = new UserDataViewController(this);
-		summaryDataViewController = new SummaryDataViewController(this);
 	}
 
 	@Override
