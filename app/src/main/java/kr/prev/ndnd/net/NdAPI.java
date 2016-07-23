@@ -27,95 +27,95 @@ import retrofit2.http.QueryMap;
 
 public class NdAPI {
 
-    /**
-     * API BASE URL
-     */
-    public static final String API_BASE_URL = "http://swm.prev.kr/ndnd/api/";
+	/**
+	 * API BASE URL
+	 */
+	public static final String API_BASE_URL = "http://swm.prev.kr/ndnd/api/";
 
 
-    /**
-     * Retrofit instance
-     */
-    private static Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl(API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build();
+	/**
+	 * Retrofit instance
+	 */
+	private static Retrofit retrofit = new Retrofit.Builder()
+			.baseUrl(API_BASE_URL)
+			.addConverterFactory(GsonConverterFactory.create())
+			.build();
 
 
-    /**
-     * Interface of including Restful API URI
-     */
-    public interface APIService {
-        @GET("load")
-        public Call<InitialData> load(
-                @QueryMap Map<String, String> queries
-        );
+	/**
+	 * Interface of including Restful API URI
+	 */
+	public interface APIService {
+		@GET("load")
+		public Call<InitialData> load(
+				@QueryMap Map<String, String> queries
+		);
 
-        @POST("data")
-        @FormUrlEncoded
-        public Call<CommitResult> insertRecordData(
-                @Field("type") String type,
-                @Field("target_user_name") String targetUserName,
-                @Field("amount") String amount,
-                @Field("note") String note,
-                @Field("date") String date,
-                @Field("location") String location,
-                @Field("access_token") String accessToken
-        );
+		@POST("data")
+		@FormUrlEncoded
+		public Call<CommitResult> insertRecordData(
+				@Field("type") String type,
+				@Field("target_user_name") String targetUserName,
+				@Field("amount") String amount,
+				@Field("note") String note,
+				@Field("date") String date,
+				@Field("location") String location,
+				@Field("access_token") String accessToken
+		);
 
-        @PUT("data/{dataId}")
-        public Call<CommitResult> updateData(
-                @Path("dataId") int dataId,
-                @QueryMap Map<String, String> queries
-        );
-    }
+		@PUT("data/{dataId}")
+		public Call<CommitResult> updateData(
+				@Path("dataId") int dataId,
+				@QueryMap Map<String, String> queries
+		);
+	}
 
-    /*private static void appendAccessTokenToParams(Map<String, String> params) {
+	/*private static void appendAccessTokenToParams(Map<String, String> params) {
 
-    }*/
+	}*/
 
-    /**
-     * Get base params (incluing access token)
-     * @return Map<String, String> params
-     */
-    public static Map<String, String> getBaseParams() {
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("access_token", AccessToken.getCurrentAccessToken().getToken());
+	/**
+	 * Get base params (incluing access token)
+	 * @return Map<String, String> params
+	 */
+	public static Map<String, String> getBaseParams() {
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("access_token", AccessToken.getCurrentAccessToken().getToken());
 
-        return params;
-    }
+		return params;
+	}
 
-    /**
-     * Load initial data (/api/load)
-     * @param callback : callback function
-     */
-    public static void loadInitialData(Callback<InitialData> callback) {
-        APIService service = retrofit.create(APIService.class);
+	/**
+	 * Load initial data (/api/load)
+	 * @param callback : callback function
+	 */
+	public static void loadInitialData(Callback<InitialData> callback) {
+		APIService service = retrofit.create(APIService.class);
 
-        Call< InitialData > call = service.load(getBaseParams());
-        call.enqueue(callback);
-    }
-
-
-    public static void insertRecordData(Map<String, String> dataParams, Callback<CommitResult> callback) {
-        APIService service = retrofit.create(APIService.class);
-        //appendAccessTokenToParams(dataParams);
-
-        Call< CommitResult > call = service.insertRecordData(
-                dataParams.get("type"),
-                dataParams.get("target_user_name"),
-                dataParams.get("amount"),
-                dataParams.get("note"),
-                dataParams.get("date"),
-                dataParams.get("location"),
-                AccessToken.getCurrentAccessToken().getToken()
-        );
-        call.enqueue(callback);
-    }
+		Call< InitialData > call = service.load(getBaseParams());
+		call.enqueue(callback);
+	}
 
 
-    public static APIService createService() {
-        APIService service = retrofit.create(APIService.class);
-        return service;
-    }
+	public static void insertRecordData(Map<String, String> dataParams, Callback<CommitResult> callback) {
+		APIService service = retrofit.create(APIService.class);
+		//appendAccessTokenToParams(dataParams);
+
+		Call< CommitResult > call = service.insertRecordData(
+				dataParams.get("type"),
+				dataParams.get("target_user_name"),
+				dataParams.get("amount"),
+				dataParams.get("note"),
+				dataParams.get("date"),
+				dataParams.get("location"),
+				AccessToken.getCurrentAccessToken().getToken()
+		);
+		call.enqueue(callback);
+	}
+
+
+	public static APIService createService() {
+		APIService service = retrofit.create(APIService.class);
+		return service;
+	}
 }

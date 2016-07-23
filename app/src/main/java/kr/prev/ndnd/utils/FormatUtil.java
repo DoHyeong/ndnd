@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class NdUtil {
+public class FormatUtil {
 
 	/**
 	 * "9,800 ￦" 처럼 규격화된 금액을 출력한다

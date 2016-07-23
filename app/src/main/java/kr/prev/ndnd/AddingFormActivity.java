@@ -51,12 +51,12 @@ import retrofit2.Response;
 
 public class AddingFormActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private int selectedType = 0;
+	private int selectedType = 0;
 	private int selectedNote = -1;
 	private String selectedNoteString;
-    private Date selectedDate;
+	private Date selectedDate;
 
-    Button fTypeLendBtn, fTypeLoanBtn;
+	Button fTypeLendBtn, fTypeLoanBtn;
 
 	EditText fNameText;
 	EditText fAmountText;
@@ -67,50 +67,50 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 	Button fRegsiterButton;
 
 
-    GPSTracker gpsTracker;
+	GPSTracker gpsTracker;
 
-    ProgressDialog progressDialog;
+	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_adding_form);
 
-        fTypeLendBtn = (Button) findViewById(R.id.fTypeLendBtn);
-        fTypeLoanBtn = (Button) findViewById(R.id.fTypeLoanBtn);
-        fTypeLendBtn.setOnClickListener(this);
-        fTypeLoanBtn.setOnClickListener(this);
+		fTypeLendBtn = (Button) findViewById(R.id.fTypeLendBtn);
+		fTypeLoanBtn = (Button) findViewById(R.id.fTypeLoanBtn);
+		fTypeLendBtn.setOnClickListener(this);
+		fTypeLoanBtn.setOnClickListener(this);
 
 
-        fNameText = (EditText) findViewById(R.id.fNameText);
-        fAmountText = (EditText) findViewById(R.id.fAmountText);
+		fNameText = (EditText) findViewById(R.id.fNameText);
+		fAmountText = (EditText) findViewById(R.id.fAmountText);
 
 
-        // Buttons of note
+		// Buttons of note
 
-        fNoteBtns.add((Button) findViewById(R.id.fNoteLunchBtn));
-        fNoteBtns.add((Button) findViewById(R.id.fNoteDinnerBtn));
-        fNoteBtns.add((Button) findViewById(R.id.fNoteCoffeeBtn));
-        fNoteBtns.add((Button) findViewById(R.id.fNoteCustomBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteLunchBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteDinnerBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteCoffeeBtn));
+		fNoteBtns.add((Button) findViewById(R.id.fNoteCustomBtn));
 
-        for (int i = 0; i < fNoteBtns.size(); i++)
-            fNoteBtns.get(i).setOnClickListener(this);
-
-
-        selectedDate = new Date();
-        fDateText = (TextView) findViewById(R.id.fDateText);
-        fDateText.setText( DateUtil.parseAsMDH(selectedDate) );
-        fDateText.setOnClickListener(this);
-
-        fLocationText = (EditText) findViewById(R.id.fLocationText);
-
-        fRegsiterButton = (Button) findViewById(R.id.fRegsiterButton);
-        fRegsiterButton.setOnClickListener(this);
+		for (int i = 0; i < fNoteBtns.size(); i++)
+			fNoteBtns.get(i).setOnClickListener(this);
 
 
+		selectedDate = new Date();
+		fDateText = (TextView) findViewById(R.id.fDateText);
+		fDateText.setText( DateUtil.parseAsMDH(selectedDate) );
+		fDateText.setOnClickListener(this);
+
+		fLocationText = (EditText) findViewById(R.id.fLocationText);
+
+		fRegsiterButton = (Button) findViewById(R.id.fRegsiterButton);
+		fRegsiterButton.setOnClickListener(this);
 
 
-        // Get friends by facebook
+
+
+		// Get friends by facebook
 		GraphRequest request = GraphRequest.newMyFriendsRequest(
 				AccessToken.getCurrentAccessToken(),
 				new GraphRequest.GraphJSONArrayCallback() {
@@ -128,7 +128,7 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 		request.executeAsync();
 
 
-        gpsTracker = new GPSTracker(this);
+		gpsTracker = new GPSTracker(this);
 
 	}
 
@@ -147,34 +147,34 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 	protected void onStart() {
 		super.onStart();
 
-        double lat, lng;
+		double lat, lng;
 
-        if (gpsTracker.canGetLocation()) {
-            lat = gpsTracker.getLatitude();
-            lng = gpsTracker.getLongitude();
+		if (gpsTracker.canGetLocation()) {
+			lat = gpsTracker.getLatitude();
+			lng = gpsTracker.getLongitude();
 
-            //Toast.makeText(this, lat + "," + lng, Toast.LENGTH_LONG).show();
-            Log.d("location", lat + "," + lng);
+			//Toast.makeText(this, lat + "," + lng, Toast.LENGTH_LONG).show();
+			Log.d("location", lat + "," + lng);
 
-            Geocoder geocoder;
-            List<Address> addresses;
+			Geocoder geocoder;
+			List<Address> addresses;
 
-            geocoder = new Geocoder(this, Locale.getDefault());
+			geocoder = new Geocoder(this, Locale.getDefault());
 
-            try {
-                addresses = geocoder.getFromLocation(lat, lng, 1);
-                if (addresses.size() > 0) {
-                    Log.d("location", addresses.get(0).toString());
-                    Toast.makeText(this, addresses.get(0).toString(), Toast.LENGTH_LONG).show();
-                }else {
-                    Toast.makeText(this, "Location data not found", Toast.LENGTH_LONG).show();
-                }
+			try {
+				addresses = geocoder.getFromLocation(lat, lng, 1);
+				if (addresses.size() > 0) {
+					Log.d("location", addresses.get(0).toString());
+					Toast.makeText(this, addresses.get(0).toString(), Toast.LENGTH_LONG).show();
+				}else {
+					Toast.makeText(this, "Location data not found", Toast.LENGTH_LONG).show();
+				}
 
-            } catch (IOException e) {
-                Log.d("location", e.toString());
-                e.printStackTrace();
-            }
-        }
+			} catch (IOException e) {
+				Log.d("location", e.toString());
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -182,70 +182,70 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 		super.onStop();
 	}
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.fTypeLendBtn:
-                selectedType = 0;
-                toggleTypeButton(fTypeLendBtn, true);
-                toggleTypeButton(fTypeLoanBtn, false);
-                break;
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+			case R.id.fTypeLendBtn:
+				selectedType = 0;
+				toggleTypeButton(fTypeLendBtn, true);
+				toggleTypeButton(fTypeLoanBtn, false);
+				break;
 
-            case R.id.fTypeLoanBtn:
-                selectedType = 1;
-                toggleTypeButton(fTypeLendBtn, false);
-                toggleTypeButton(fTypeLoanBtn, true);
-                break;
+			case R.id.fTypeLoanBtn:
+				selectedType = 1;
+				toggleTypeButton(fTypeLendBtn, false);
+				toggleTypeButton(fTypeLoanBtn, true);
+				break;
 
-            case R.id.fDateText :
-                DialogUtil.openDateDialog(getSupportFragmentManager(), "날짜 선택", selectedDate, new DialogUtil.Callback<Date>() {
-                    @Override
-                    public void onData(Date date) {
-                        selectedDate = date;
-                        fDateText.setText( DateUtil.parseAsMDH(date) );
-                    }
-                });
-                break;
+			case R.id.fDateText :
+				DialogUtil.openDateDialog(getSupportFragmentManager(), "날짜 선택", selectedDate, new DialogUtil.Callback<Date>() {
+					@Override
+					public void onData(Date date) {
+						selectedDate = date;
+						fDateText.setText( DateUtil.parseAsMDH(date) );
+					}
+				});
+				break;
 
-            case R.id.fRegsiterButton:
-                doUpload();
-                break;
+			case R.id.fRegsiterButton:
+				doUpload();
+				break;
 
 
-            case R.id.fNoteLunchBtn:
-            case R.id.fNoteDinnerBtn:
-            case R.id.fNoteCoffeeBtn:
-            case R.id.fNoteCustomBtn:
-                int idx = fNoteBtns.indexOf(v);
+			case R.id.fNoteLunchBtn:
+			case R.id.fNoteDinnerBtn:
+			case R.id.fNoteCoffeeBtn:
+			case R.id.fNoteCustomBtn:
+				int idx = fNoteBtns.indexOf(v);
 
-                if (selectedNote != -1)
-                    fNoteBtns.get(selectedNote).getBackground().clearColorFilter();
+				if (selectedNote != -1)
+					fNoteBtns.get(selectedNote).getBackground().clearColorFilter();
 
-                fNoteBtns.get(idx).getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.ADD);
-                selectedNoteString = fNoteBtns.get(idx).getText().toString();
+				fNoteBtns.get(idx).getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.ADD);
+				selectedNoteString = fNoteBtns.get(idx).getText().toString();
 
-                selectedNote = idx;
+				selectedNote = idx;
 
-                if (idx == 3) {
-                    // 직접입력
-                    DialogUtil.openDialogWithEditText(this, "노트 입력", "간단한 설명을 입력 해 주세요", new DialogUtil.Callback<String>() {
-                        @Override
-                        public void onData(String data) {
-                            selectedNoteString = data;
-                        }
-                    });
-                }
-                break;
-        }
-    }
+				if (idx == 3) {
+					// 직접입력
+					DialogUtil.openDialogWithEditText(this, "노트 입력", "간단한 설명을 입력 해 주세요", new DialogUtil.Callback<String>() {
+						@Override
+						public void onData(String data) {
+							selectedNoteString = data;
+						}
+					});
+				}
+				break;
+		}
+	}
 
-    private void toggleTypeButton(Button btn, boolean value) {
-        if (value)
-            btn.setBackgroundColor(Color.rgb(255, 255, 255));
-        else
-            btn.setBackgroundColor(Color.rgb(170, 170, 170));
+	private void toggleTypeButton(Button btn, boolean value) {
+		if (value)
+			btn.setBackgroundColor(Color.rgb(255, 255, 255));
+		else
+			btn.setBackgroundColor(Color.rgb(170, 170, 170));
 
-    }
+	}
 
 	private boolean checkBeforeUpload() {
 		if (fNameText.getText().length() == 0) {
@@ -277,12 +277,12 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 			data.put("date", DateUtil.parseAsYMDHIS(selectedDate));
 			data.put("location", fLocationText.getText().toString());
 
-            progressDialog = ProgressDialog.show(this, "", "전송 중", true);
+			progressDialog = ProgressDialog.show(this, "", "전송 중", true);
 
 			NdAPI.insertRecordData(data, new Callback<CommitResult>() {
 				@Override
 				public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
-                    progressDialog.hide();
+					progressDialog.hide();
 
 					if (response.body().success)
 						finish();
@@ -292,8 +292,8 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 
 				@Override
 				public void onFailure(Call<CommitResult> call, Throwable t) {
-                    progressDialog.hide();
-                    Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
+					progressDialog.hide();
+					Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
 				}
 			});
 		}
