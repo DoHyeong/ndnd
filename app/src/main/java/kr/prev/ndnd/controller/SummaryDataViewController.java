@@ -8,7 +8,7 @@ import java.util.List;
 import kr.prev.ndnd.R;
 import kr.prev.ndnd.data.RecordData;
 import kr.prev.ndnd.data.SummarayData;
-import kr.prev.ndnd.utils.FormatUtil;
+import kr.prev.ndnd.util.FormatUtil;
 
 public class SummaryDataViewController implements IViewController {
 	SummarayData summaryData;

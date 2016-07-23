@@ -54,13 +54,13 @@ public class NdAPI {
 		@POST("data")
 		@FormUrlEncoded
 		public Call<CommitResult> insertRecordData(
-				@Field("type") String type,
+				@Field("type") int type,
 				@Field("target_user_name") String targetUserName,
 				@Field("amount") String amount,
 				@Field("note") String note,
 				@Field("date") String date,
 				@Field("location") String location,
-				@Field("access_token") String accessToken
+                @QueryMap Map<String, String> queries
 		);
 
 		@PUT("data/{dataId}")
@@ -69,10 +69,6 @@ public class NdAPI {
 				@QueryMap Map<String, String> queries
 		);
 	}
-
-	/*private static void appendAccessTokenToParams(Map<String, String> params) {
-
-	}*/
 
 	/**
 	 * Get base params (incluing access token)
@@ -83,34 +79,6 @@ public class NdAPI {
 		params.put("access_token", AccessToken.getCurrentAccessToken().getToken());
 
 		return params;
-	}
-
-	/**
-	 * Load initial data (/api/load)
-	 * @param callback : callback function
-	 */
-	public static void loadInitialData(Callback<InitialData> callback) {
-		APIService service = retrofit.create(APIService.class);
-
-		Call< InitialData > call = service.load(getBaseParams());
-		call.enqueue(callback);
-	}
-
-
-	public static void insertRecordData(Map<String, String> dataParams, Callback<CommitResult> callback) {
-		APIService service = retrofit.create(APIService.class);
-		//appendAccessTokenToParams(dataParams);
-
-		Call< CommitResult > call = service.insertRecordData(
-				dataParams.get("type"),
-				dataParams.get("target_user_name"),
-				dataParams.get("amount"),
-				dataParams.get("note"),
-				dataParams.get("date"),
-				dataParams.get("location"),
-				AccessToken.getCurrentAccessToken().getToken()
-		);
-		call.enqueue(callback);
 	}
 
 

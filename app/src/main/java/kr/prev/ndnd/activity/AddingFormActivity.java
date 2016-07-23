@@ -1,14 +1,10 @@
-package kr.prev.ndnd;
+package kr.prev.ndnd.activity;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.location.Address;
 import android.location.Geocoder;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,17 +21,16 @@ import com.facebook.GraphResponse;
 import org.json.JSONArray;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import kr.prev.ndnd.R;
 import kr.prev.ndnd.data.CommitResult;
 import kr.prev.ndnd.net.NdAPI;
-import kr.prev.ndnd.utils.DateUtil;
-import kr.prev.ndnd.utils.DialogUtil;
-import kr.prev.ndnd.utils.GPSTracker;
+import kr.prev.ndnd.util.DateUtil;
+import kr.prev.ndnd.util.DialogUtil;
+import kr.prev.ndnd.util.GPSTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -56,6 +51,9 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 	private String selectedNoteString;
 	private Date selectedDate;
 
+
+	ProgressDialog loadingProgressDialog;
+
 	Button fTypeLendBtn, fTypeLoanBtn;
 
 	EditText fNameText;
@@ -66,10 +64,8 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 	EditText fLocationText;
 	Button fRegsiterButton;
 
-
 	GPSTracker gpsTracker;
 
-	ProgressDialog progressDialog;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +104,9 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 		fRegsiterButton.setOnClickListener(this);
 
 
-
+		loadingProgressDialog = new ProgressDialog(this);
+		loadingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+		loadingProgressDialog.setMessage("로딩중입니다...");
 
 		// Get friends by facebook
 		GraphRequest request = GraphRequest.newMyFriendsRequest(
@@ -269,33 +267,35 @@ public class AddingFormActivity extends AppCompatActivity implements View.OnClic
 
 	private void doUpload() {
 		if (checkBeforeUpload()) {
-			HashMap<String, String> data = new HashMap<String, String>();
-			data.put("type", ""+ selectedType);
-			data.put("target_user_name", fNameText.getText().toString());
-			data.put("amount", fAmountText.getText().toString());
-			data.put("note", selectedNoteString);
-			data.put("date", DateUtil.parseAsYMDHIS(selectedDate));
-			data.put("location", fLocationText.getText().toString());
+			loadingProgressDialog.show();
 
-			progressDialog = ProgressDialog.show(this, "", "전송 중", true);
+			NdAPI.createService()
+					.insertRecordData(
+							selectedType,
+							fNameText.getText().toString(),
+							fAmountText.getText().toString(),
+							selectedNoteString,
+							DateUtil.parseAsYMDHIS(selectedDate),
+							fLocationText.getText().toString(),
+							NdAPI.getBaseParams()
+					)
+					.enqueue(new Callback<CommitResult>() {
+						@Override
+						public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
+							loadingProgressDialog.hide();
 
-			NdAPI.insertRecordData(data, new Callback<CommitResult>() {
-				@Override
-				public void onResponse(Call<CommitResult> call, Response<CommitResult> response) {
-					progressDialog.hide();
+							if (response.body().success)
+								finish();
+							else
+								Toast.makeText(AddingFormActivity.this, "오류가 발생했습니다", Toast.LENGTH_LONG).show();
+						}
 
-					if (response.body().success)
-						finish();
-					else
-						Toast.makeText(AddingFormActivity.this, "오류가 발생했습니다", Toast.LENGTH_LONG).show();
-				}
-
-				@Override
-				public void onFailure(Call<CommitResult> call, Throwable t) {
-					progressDialog.hide();
-					Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
-				}
-			});
+						@Override
+						public void onFailure(Call<CommitResult> call, Throwable t) {
+							loadingProgressDialog.hide();
+							Toast.makeText(AddingFormActivity.this, "서버 전송에 오류가 발생했습니다", Toast.LENGTH_LONG).show();
+						}
+					});
 		}
 	}
 }

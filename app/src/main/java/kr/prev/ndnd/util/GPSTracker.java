@@ -1,4 +1,4 @@
-package kr.prev.ndnd.utils;
+package kr.prev.ndnd.util;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -13,8 +13,6 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-
-import kr.prev.ndnd.AddingFormActivity;
 
 public final class GPSTracker implements LocationListener {
 

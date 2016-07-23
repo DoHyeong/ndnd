@@ -1,4 +1,4 @@
-package kr.prev.ndnd.utils;
+package kr.prev.ndnd.util;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -8,7 +8,6 @@ import android.widget.EditText;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimeListener;
 import com.github.jjobes.slidedatetimepicker.SlideDateTimePicker;
 
-import java.util.Calendar;
 import java.util.Date;
 
 public class DialogUtil {

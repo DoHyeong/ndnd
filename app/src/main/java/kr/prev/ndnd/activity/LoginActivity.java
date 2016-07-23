@@ -1,4 +1,4 @@
-package kr.prev.ndnd;
+package kr.prev.ndnd.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +16,8 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+
+import kr.prev.ndnd.R;
 
 
 /**

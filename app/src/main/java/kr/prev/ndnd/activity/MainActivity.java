@@ -1,4 +1,4 @@
-package kr.prev.ndnd;
+package kr.prev.ndnd.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -20,7 +20,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.ProfilePictureView;
 
-import kr.prev.ndnd.controller.IViewController;
+import kr.prev.ndnd.R;
 import kr.prev.ndnd.controller.IViewControllerManager;
 import kr.prev.ndnd.controller.UserDataViewController;
 import kr.prev.ndnd.data.InitialData;
@@ -50,6 +50,45 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
     UserDataViewController userDataViewController;
 
 
+	Callback<InitialData> loadInitialCallBack = new Callback<InitialData>() {
+		@Override
+		public void onResponse(Call<InitialData> call, Response<InitialData> response) {
+			initData = response.body();
+
+			if (response.body() == null) {
+				Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
+				return;
+			}
+
+			userDataViewController.setData(initData.user);
+			summaryDataViewController.setData(initData.summary);
+
+
+			// Set Listview by recordData
+			RecordListAdapter adapter = new RecordListAdapter(MainActivity.this);
+			adapter.setViewControllerManager(MainActivity.this);
+			adapter.setMode(Attributes.Mode.Single);
+
+			for (RecordData rd : initData.data)
+				adapter.getList().add(rd);
+
+			ListView listView = (ListView) findViewById(R.id.recordListView);
+			listView.setAdapter(adapter);
+
+			MainActivity.this.updateAllViewControllers();
+			loadingProgressDialog.hide();
+		}
+
+		@Override
+		public void onFailure(Call<InitialData> call, Throwable t) {
+			loadingProgressDialog.hide();
+
+			Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
+			Log.e("callback", "fail");
+		}
+	};
+
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +98,6 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 			FacebookSdk.sdkInitialize(getApplicationContext());
 
 		setContentView(R.layout.activity_main);
-
 
 		// Drawer layout proccess
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -92,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 		loadingProgressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
 		loadingProgressDialog.setMessage("로딩중입니다...");
 
+
+		userDataViewController = new UserDataViewController(this);
+		summaryDataViewController = new SummaryDataViewController(this);
 	}
 
 	@Override
@@ -114,52 +155,11 @@ public class MainActivity extends AppCompatActivity implements IViewControllerMa
 	 * Load initial data by connecting to server
 	 */
 	public void loadRecords() {
-
 		loadingProgressDialog.show();
 
-        userDataViewController = new UserDataViewController(this);
-		summaryDataViewController = new SummaryDataViewController(this);
-
-
-		NdAPI.loadInitialData(new Callback<InitialData>() {
-			@Override
-			public void onResponse(Call<InitialData> call, Response<InitialData> response) {
-				initData = response.body();
-
-				if (response.body() == null) {
-					Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
-					return;
-				}
-
-                userDataViewController.setData(initData.user);
-				summaryDataViewController.setData(initData.summary);
-
-
-				// Set Listview by recordData
-				RecordListAdapter adapter = new RecordListAdapter(MainActivity.this);
-				adapter.setMode(Attributes.Mode.Single);
-                adapter.setViewControllerManager(MainActivity.this);
-
-                for (RecordData rd : initData.data)
-                    adapter.getList().add(rd);
-
-				ListView listView = (ListView) findViewById(R.id.recordListView);
-				listView.setAdapter(adapter);
-
-
-                MainActivity.this.updateAllViewControllers();
-				loadingProgressDialog.hide();
-			}
-
-			@Override
-			public void onFailure(Call<InitialData> call, Throwable t) {
-				loadingProgressDialog.hide();
-
-				Toast.makeText(MainActivity.this, "데이터 불러오기에 실패했습니다", Toast.LENGTH_LONG).show();
-				Log.e("callback", "fail");
-			}
-
-		});
+		NdAPI.createService()
+				.load(NdAPI.getBaseParams())
+				.enqueue(loadInitialCallBack);
 	}
 
 	public void updateUserDataFields(UserData userData) {

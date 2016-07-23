@@ -1,9 +1,4 @@
-package kr.prev.ndnd.utils;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+package kr.prev.ndnd.util;
 
 public class FormatUtil {
 
