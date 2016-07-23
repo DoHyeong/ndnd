@@ -56,7 +56,7 @@ public class NdAPI {
 		public Call<CommitResult> insertRecordData(
 				@Field("type") int type,
 				@Field("target_user_name") String targetUserName,
-				@Field("amount") String amount,
+				@Field("amount") int amount,
 				@Field("note") String note,
 				@Field("date") String date,
 				@Field("location") String location,

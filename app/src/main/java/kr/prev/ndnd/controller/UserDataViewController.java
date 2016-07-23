@@ -28,6 +28,7 @@ public class UserDataViewController implements IViewController {
     public void update() {
         if (userData == null) return;
 
+		nameText.setText( userData.userName );
         profilePicture.setProfileId( userData.socialUid );
     }
 }

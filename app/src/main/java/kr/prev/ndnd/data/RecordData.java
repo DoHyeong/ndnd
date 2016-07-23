@@ -70,21 +70,4 @@ public class RecordData {
 	 */
 	public UserData targetUser;
 
-
-	@Override
-	public String toString() {
-		String str = "kr.prev.ndnd.UserData {\n";
-		for (Field field : this.getClass().getDeclaredFields()) {
-			try {
-				if (field.get(this) != null)
-					str += "\t" + field.getName() + ": " + field.get(this).toString() + "\n";
-				else
-					str += "\t" + field.getName() + ": null\n";
-
-			}catch (IllegalAccessException e) {
-
-			}
-		}
-		return str + "}";
-	}
 }
