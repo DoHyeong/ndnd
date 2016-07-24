@@ -81,13 +81,15 @@ public class FriendSelectActivity extends AppCompatActivity {
 		directInputButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				DialogUtil.openDialogWithEditText(FriendSelectActivity.this, "이름 입력", "상대방의 이름을 입력 해 주세요", new DialogUtil.Callback<String>() {
+				DialogUtil.openDialogWithEditText(FriendSelectActivity.this, "이름 입력", "상대방의 이름을 입력 해 주세요", "", new DialogUtil.Callback<String>() {
 					@Override
 					public void onData(String data) {
-						UserData user = new UserData();
-						user.userName = data;
+						if (data != null) {
+							UserData user = new UserData();
+							user.userName = data;
 
-						sendDataAndFinish(user);
+							sendDataAndFinish(user);
+						}
 					}
 				});
 			}

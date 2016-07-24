@@ -73,24 +73,32 @@ public class AddingFormViewController implements IViewController {
 				case R.id.fNoteLunchBtn:
 				case R.id.fNoteDinnerBtn:
 				case R.id.fNoteCoffeeBtn:
-				case R.id.fNoteCustomBtn:
 					int idx = noteBtns.indexOf(v);
-					if (selectedNote != -1)
-						noteBtns.get(selectedNote).getBackground().clearColorFilter();
+
+					for (Button b : noteBtns) b.getBackground().clearColorFilter();
 
 					noteBtns.get(idx).getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.ADD);
-
-					if (idx == 3) { // 직접입력
-						DialogUtil.openDialogWithEditText(activity, "노트 입력", "간단한 설명을 입력 해 주세요", new DialogUtil.Callback<String>() {
-							@Override
-							public void onData(String data) {
-								model.note = data;
-							}
-						});
-					}else
-						model.note = noteBtns.get(idx).getText().toString();
+					model.note = noteBtns.get(idx).getText().toString();
 
 					selectedNote = idx;
+					break;
+
+				case R.id.fNoteCustomBtn:
+					String inputValue = (selectedNote == 3) ? model.note : "";
+
+					DialogUtil.openDialogWithEditText(activity, "노트 입력", "간단한 설명을 입력 해 주세요", inputValue, new DialogUtil.Callback<String>() {
+						@Override
+						public void onData(String data) {
+							if (data != null) {
+								for (Button b : noteBtns) b.getBackground().clearColorFilter();
+								noteBtns.get(3).getBackground().setColorFilter(Color.BLUE, PorterDuff.Mode.ADD);
+								model.note = data;
+
+								selectedNote = 3;
+							}
+						}
+					});
+
 					break;
 			}
 		}

@@ -16,7 +16,7 @@ public class DialogUtil {
 		public void onData(T data);
 	}
 
-	public static void openDialogWithEditText(Context context, String title, String message, final Callback<String> callback) {
+	public static void openDialogWithEditText(Context context, String title, String message, String inputValue, final Callback<String> callback) {
 		AlertDialog.Builder dialog = new AlertDialog.Builder(context);
 		dialog.setTitle(title);
 		dialog.setMessage(message);
@@ -24,13 +24,21 @@ public class DialogUtil {
 		float DPI = context.getResources().getDisplayMetrics().density;
 		int margin = (int)(15*DPI);
 
-		final EditText input = new EditText(context);
-		dialog.setView(input, margin, margin, margin, margin);
+		final EditText dialogInput = new EditText(context);
+		dialogInput.setText(inputValue);
+		dialog.setView(dialogInput, margin, margin, margin, margin);
 
 		dialog.setPositiveButton("확인", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int whichButton) {
-				callback.onData( input.getText().toString() );
+				callback.onData( dialogInput.getText().toString() );
+			}
+		});
+
+		dialog.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int whichButton) {
+				callback.onData( null );
 			}
 		});
 
