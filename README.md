@@ -13,7 +13,7 @@ SWMaestro 첫번째 과제를 위해 제작한 안드로이드 애플리케이�
 - 슬라이드를 통한 거래 완료/복구 기능
 
 ## 기술
-- Client: Android (API 15)
+- Client: Android (API 15+)
 - Server: PHP / mariaDB / nginx (RESTful)
 - Facebbok Graph API
 
